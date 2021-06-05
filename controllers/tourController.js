@@ -5,7 +5,16 @@ const Tour = require("./../models/tourModel");
 // Method: GET.
 module.exports = getAllTours = async (req, res) => {
   try {
-    let tours = await Tour.find();
+    const queryObj = { ...req.query };
+    // 1) FILTERING
+    const excludedFields = ["page", "sort", "limit", "fields"];
+    excludedFields.forEach((el) => delete queryObj[el]);
+    let query = Tour.find();
+    const tours = await query;
+
+    // 2) ADVANCE FILTERING
+    const queryStr = JSON.stringify(queryObj);
+    queryStr.replace(/\b(gte|gt|lte|lt)\b/);
 
     res.status(200).json({
       status: "success",
@@ -59,7 +68,7 @@ const createTour = async (req, res) => {
     console.log(err);
     res.status(400).json({
       status: "fail",
-      message: "Invalid sent data!",
+      message: err,
     });
   }
 };
@@ -87,6 +96,9 @@ const updateTour = async (req, res) => {
   }
 };
 
+// Delete the requested tour.
+// Required data: Tour's id.
+// Method: DELETE.
 const deleteTour = async (req, res) => {
   try {
     await Tour.findByIdAndDelete(req.params.id);
