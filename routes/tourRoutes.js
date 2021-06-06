@@ -1,19 +1,29 @@
-const express = require('express');
-const controller = require('../controllers/tourController');
+const express = require("express");
+const controller = require("../controllers/tourController");
 
-const router = express.Router()
+const router = express.Router();
 
 //router.param('id', controller.checkID); For some reason this middleware isn't working.
 
 router
-	.route('/')
-	.get(controller.getAllTours)
-	.post(controller.createTour)
+  .route("/top-5-cheap")
+  .get(controller.aliasTopTours ,controller.getAllTours);
 
 router
-	.route('/:id')
-	.get(controller.getTour)
-	.patch(controller.updateTour)
-	.delete(controller.deleteTour)
+  .route("/tours-stats")
+  .get(controller.getTourStats);
+  router
+  .route("/monthly-plan/:year")
+  .get(controller.getMonthlyPlan);
+
+router.route("/")
+	.get(controller.getAllTours)
+	.post(controller.createTour);
+
+router
+  .route("/:id")
+  .get(controller.getTour)
+  .patch(controller.updateTour)
+  .delete(controller.deleteTour);
 
 module.exports = router;
