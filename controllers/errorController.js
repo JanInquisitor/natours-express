@@ -59,7 +59,7 @@ module.exports = (err, req, res, next) => {
 
     // So, mongoose removed the property "name" from the error object so in order to get name of the error
     // you need to extract it directly from the constructor like this: "err.constructor.name"
-    // or use Object.assign() method to make an exact copy, either way it works.
+    // or use Object.assign() method to make an exact copy, either way works.
     if (error.name === "CastError") error = handleCastErrorDB(error);
     if (error.code === 11000) error = handleDuplicatedFieldsDB(error);
     if (error.name === "ValidationError") error = handleValidationError(error);
