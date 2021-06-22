@@ -1,5 +1,6 @@
 const express = require("express");
 const controller = require("../controllers/tourController");
+const auth = require("../controllers/authController");
 
 const router = express.Router();
 
@@ -7,18 +8,15 @@ const router = express.Router();
 
 router
   .route("/top-5-cheap")
-  .get(controller.aliasTopTours ,controller.getAllTours);
+  .get(controller.aliasTopTours, controller.getAllTours);
+
+router.route("/tours-stats").get(controller.getTourStats);
+router.route("/monthly-plan/:year").get(controller.getMonthlyPlan);
 
 router
-  .route("/tours-stats")
-  .get(controller.getTourStats);
-  router
-  .route("/monthly-plan/:year")
-  .get(controller.getMonthlyPlan);
-
-router.route("/")
-	.get(controller.getAllTours)
-	.post(controller.createTour);
+  .route("/")
+    .get(auth.protect, controller.getAllTours)
+    .post(controller.createTour);
 
 router
   .route("/:id")
