@@ -15,13 +15,17 @@ router.route("/monthly-plan/:year").get(controller.getMonthlyPlan);
 
 router
   .route("/")
-    .get(auth.protect, controller.getAllTours)
-    .post(controller.createTour);
+  .get(auth.protect, controller.getAllTours)
+  .post(controller.createTour);
 
 router
   .route("/:id")
   .get(controller.getTour)
   .patch(controller.updateTour)
-  .delete(controller.deleteTour);
+  .delete(
+    auth.protect,
+    auth.restrictTo("admin", "lead-guide"),
+    controller.deleteTour
+  );
 
 module.exports = router;
