@@ -112,9 +112,16 @@ const tourSchema = new mongoose.Schema(
   }
 );
 
-//Virtual properties
+//VIRTUAL PROPERTIES
 tourSchema.virtual("durationWeeks").get(function () {
   return this.duration / 7;
+});
+
+//virtual populate
+tourSchema.virtual("reviews", {
+  ref: "Review",
+  foreignField: "tour",
+  localField: "_id",
 });
 
 //Document Middleware, it runs before a document is saved ( .save() and .create() )
@@ -130,11 +137,10 @@ tourSchema.pre("save", async function (next) {
 });
 
 // QUERY MIDDLEWARE
-
 tourSchema.pre(/^find/, function (next) {
   this.populate({
     path: "guides",
-    select: "-__v -passwordChangedAt",
+    select: "-__v -passwordChangedAt -email",
   });
   next();
 });
