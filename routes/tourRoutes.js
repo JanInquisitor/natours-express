@@ -6,6 +6,7 @@ const auth = require("../controllers/authController");
 const router = express.Router();
 
 //router.param('id', controller.checkID); For some reason this middleware isn't working.
+router.use(auth.protect);
 
 router.use("/:tourId/reviews", reviewRouter);
 
@@ -21,6 +22,8 @@ router
     auth.restrictTo("lead-guide", "admin", "user"),
     controller.getMonthlyPlan
   );
+
+router.route("/tours-within/:distance/center/:latlng/unit/:unit");
 
 router
   .route("/")
