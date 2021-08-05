@@ -67,9 +67,9 @@ app.use("/api/v1/reviews", reviewRouter);
 app.use("/", viewRouter);
 
 app.all("*", (req, res, next) => {
-  next(new AppError(`Can't find ${req.originalUrl} on this server`, 404));
+  next(new AppError(`Can't find ${req.originalUrl} on this server`, 404)); // <--- When this catches an error.
 });
 
-app.use(globalErrorHandler);
+app.use(globalErrorHandler); // <--- this functions process the error.
 
 module.exports = app;

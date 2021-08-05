@@ -60,8 +60,8 @@ module.exports = (err, req, res, next) => {
   if (process.env.NODE_ENV == "development") {
     sendErrorDev(err, res);
   } else if ((process.env.NODE_ENV = "production")) {
-    let error = { ...err };
-    error = Object.assign(err);
+    let error = { ...err }; // This break the object into "pieces".
+    error = Object.assign(err); // and then this here create a new error object assigning the key and values of the previous object
 
     // So, mongoose removed the property "name" from the error object so in order to get name of the error
     // you need to extract it directly from the constructor like this: "err.constructor.name"
